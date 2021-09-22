@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <h1>In Progress</h1>
+            <div class="split left">
+                <div class="centered">
+                    <p><br>
+                        <h4 id="title_1">Valores del dolar y euro: </h4>
+                        <hr>
+                        <p>Dolar Venta Oficial: $<spam id="dolar_oficial_venta"></spam></p>
+                        <hr>
+                        <p>Dolar Compra Oficial: $<spam id="dolar_oficial_compra"></spam></p>
+                        <hr>
+                        <p>Dolar Venta Blue: $<spam id="dolar_blue_venta"></spam></p>
+                        <hr>
+                        <p>Dolar Compra Blue: $<spam id="dolar_blue_compra"></spam></p>
+                        <div style="height: 20px; background-color:blue;"></div>
+                        <p>Euro Venta Oficial: $<spam id="euro_oficial_venta"></spam></p>
+                        <hr>
+                        <p>Euro Compra Oficial: $<spam id="euro_oficial_compra"></spam></p>
+                        <hr>
+                        <p>Euro Venta Blue: $<spam id="euro_blue_venta"></spam></p>
+                        <hr>
+                        <p>Euro Compra Blue: $<spam id="euro_blue_compra"></spam></p>
+                        <div style="height: 20px; background-color:blue;"></div>
+                    </p>
+                </div>
+            </div>
+
+            <div class="split right">
+                <div class="centered">
+                    <p><br>
+                        <h4 id="title_2">Valor top 5 crypto monedas: </h4>
+                        <hr>
+                        <p><span id="coin_name_1"></span> : u$d<spam id="coin_price_1"></spam> | info: <spam id="coin_info_1"></spam></p>
+                        <hr>
+                        <p><span id="coin_name_2"></span> : u$d<spam id="coin_price_2"></spam> | info: <spam id="coin_info_2"></spam></p>
+                        <hr>
+                        <p><span id="coin_name_3"></span> : u$d<spam id="coin_price_3"></spam> | info: <spam id="coin_info_3"></spam></p>
+                        <hr>
+                        <p><span id="coin_name_4"></span> : u$d<spam id="coin_price_4"></spam> | info: <spam id="coin_info_4"></spam></p>
+                        <hr>
+                        <p><span id="coin_name_5"></span> : u$d<spam id="coin_price_5"></spam> | info: <spam id="coin_info_5"></spam></p>
+                        <div style="height: 20px; background-color:blue;"></div>
+                    </p>
+                </div>
+            </div>
+    <script>
+            fetch('/api/coin',{
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'}
+            })
+            .then(response => response.json())
+            .then(data =>
+                {
+                    console.log(data);
+
+                    if(data.values.status != undefined){
+                        document.getElementById('title_1').innerHTML = data.values.message;
+                        document.getElementById('title_2').innerHTML = data.values.message;
+                        return
+                    }
+
+                    document.getElementById('dolar_oficial_venta').innerHTML = data.values.dolarEuroValue.dolarVentaOficial;
+                    document.getElementById('dolar_oficial_compra').innerHTML = data.values.dolarEuroValue.dolarCompraOficial;
+                    document.getElementById('dolar_blue_venta').innerHTML = data.values.dolarEuroValue.dolarVentaBlue;
+                    document.getElementById('dolar_blue_compra').innerHTML = data.values.dolarEuroValue.dolarCompraBlue;
+                    document.getElementById('euro_oficial_venta').innerHTML = data.values.dolarEuroValue.euroVentaOficial;
+                    document.getElementById('euro_oficial_compra').innerHTML = data.values.dolarEuroValue.euroCompraOficial;
+                    document.getElementById('euro_blue_venta').innerHTML = data.values.dolarEuroValue.euroVentaBlue;
+                    document.getElementById('euro_blue_compra').innerHTML = data.values.dolarEuroValue.euroCompraBlue;
+
+                    /* data.values.crytoCoinsValue.forEach(element, index => {
+                        console.log('index: '+index + ' elemento: '+element);
+                        document.getElementById(`coin_name_${index}`).innerHTML = element.name;
+                        document.getElementById(`coin_price_${index}`).innerHTML = element.princeUsd;
+                        document.getElementById(`coin_info_${index}`).innerHTML = element.explorer; 
+                    });  
+                    */
+                    
+                    for (var i = 0; i < data.values.crytoCoinsValue.length; i++) {
+                        console.log('Resultado: '+ JSON.stringify(data.values.crytoCoinsValue[i]));
+                        document.getElementById(`coin_name_${i}`).innerHTML = data.values.crytoCoinsValue[i].name;
+                    }
+
+                }
+             );
+    </script>
+</body>
+</html>
